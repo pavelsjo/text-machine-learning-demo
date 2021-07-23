@@ -1,4 +1,5 @@
 const express = require('express');
+const predictions = require('./source/oml');
 
 // express app
 const app = express();
@@ -18,7 +19,7 @@ app.get('/', (req, res) => {
 
 app.post('/', (req, res) => {
 
-    console.log(req.body);
-    res.send({"data":'Prediction'});
-    
+    predictions(req.body.textIn).then(textOut => {
+        res.send(textOut);
+    });
 });
