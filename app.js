@@ -1,4 +1,13 @@
 const express = require('express');
+const AutonomousDataBase = require('./source/oml');
+
+const adb =  new AutonomousDataBase({
+    omlserver : process.env.OMLSERVER,
+    tenant : process.env.TENANT,
+    database : process.env.DATABASENAME,
+    username : process.env.USERNAME,
+    password : process.env.PASSWORD,
+});
 
 // express app
 const app = express();
@@ -16,9 +25,8 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
 
     console.log(req.body);
-    // predictions(req.body.textIn).then(textOut => {
-    //     res.send(textOut);
-    // });
+    res.send({"msg":adb.mostRelevantKeywords({text:req.body, topN:5, languaje:"SPANISH"})});
+    
 });
 
 // 404

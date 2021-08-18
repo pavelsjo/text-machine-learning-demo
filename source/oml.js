@@ -8,7 +8,7 @@ class AutonomousDataBase {
         this.username = username;
         this.password = password;
     }
-    getToken = () => {
+    getToken = async () => {
 
         // set constructors
         var url = `${this.omlserver}/omlusers/tenants/${this.tenant}/databases/${this.database}/api/oauth2/v1/token`;
@@ -26,10 +26,10 @@ class AutonomousDataBase {
     }
     mostRelevantKeywords = async ({text, topN, languaje}) => {
         
-        const token = await getToken({database, username, password, tenant, omlserver});
+        const token = await this.getToken();
         const accessToken = token["accessToken"];
 
-        const url = `${omlserver}/omlmod/v1/cognitive-text/summary`;
+        const url = `${this.omlserver}/omlmod/v1/cognitive-text/summary`;
         const headers = {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${accessToken}` 
@@ -43,7 +43,7 @@ class AutonomousDataBase {
         const data = await fetch(url,{
             method:"POST",
             headers: headers,
-            body:JSON.stringify(body)           
+            body: JSON.stringify(body)           
         });
 
     return JSON.stringify(await data.json());
