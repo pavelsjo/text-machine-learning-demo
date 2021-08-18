@@ -13,9 +13,15 @@ app.get('/', (req, res) => {
     res.sendFile('./views/index.html', {root: __dirname})
 });
 
-// app.post('/', (req, res) => {
+app.post('/', (req, res) => {
 
-//     predictions(req.body.textIn).then(textOut => {
-//         res.send(textOut);
-//     });
-// });
+    console.log(req.body);
+    // predictions(req.body.textIn).then(textOut => {
+    //     res.send(textOut);
+    // });
+});
+
+// 404
+app.use((req, res) => {
+    res.status(404).sendFile('./views/404.html', {root: __dirname})
+});
