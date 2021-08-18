@@ -2,11 +2,11 @@ const fetch = require("node-fetch");
 
 // parameters
 var parameters = {
-    omlserver : "",
-    tenant : "",
-    database : "",
-    username : "",
-    password : "",
+    omlserver : process.env.OMLSERVER,
+    tenant : process.env.TENANT,
+    database : process.env.DATABASENAME,
+    username : process.env.USERNAME,
+    password : process.env.PASSWORD,
 };
 
 // functions
@@ -64,21 +64,17 @@ var getSentimentTextML =  async ({database, username, password, tenant, omlserve
     const accessToken = token["accessToken"];
 
     const url = `${omlserver}/omlmod/v1/cognitive-text/sentiment`;
-    const headers = {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${accessToken}` 
-    };
-    const body = {
-        "textList": [textIn]
-    };
     
     const jsonReq = await fetch(url, {
             method:"POST",
-            headers: headers,
-            body:JSON.stringify(body)           
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}` 
+            },
+            body:JSON.stringify([textIn])           
         });
 
-    return await jsonReq.json();
+    return jsonReq;
 
 };
 
