@@ -13,35 +13,23 @@
 <body>
 
     <form class="container section" method="post"> 
-        <h6>Write some Text</h6>
+        <h6>Encuentra tu nuevo trabajo</h6>
         <div class="divider"></div>
 
         <div class="input-field">
-          <input placeholder="e.g. Tofu, mushroom, garlic" id="inputs" type="text" class="validate">
-          <label for="iputs">Input Text</label>
+          <input placeholder="ejemplo científico de datos, vendedor, etc" id="inputs" type="text" class="validate">
         </div>
         <button class="btn-small" type="submit">send</button>
+        <div class="container">
+          <div class="collection">
+            <!-- html-dynamic -->
+          </div>
+        </div>
+
       </form>             
     
 </body>
  <!--JavaScript at end of body for optimized loading-->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
- <script>
-
-   const form = document.querySelector('form');
-
-   form.addEventListener('submit', (evt) => {
-     
-    evt.preventDefault();
-    
-    fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ textIn: form.inputs.value })
-    })
-    .then( res => res.json() )
-    .then( data => { console.log(data) } )
-    .catch( err => {console.log(err)} ) 
-  });
-</script>
+<script src="./app-front.js"></script>
 </html>

@@ -1,13 +1,21 @@
 const express = require('express');
-const AutonomousDataBase = require('./source/oml');
+const data = require('./source/db/db.json');
+const adb = require('./source/node-oml/node-oml/adb');
 
-const adb =  new AutonomousDataBase({
+const parameters = {
     omlserver : process.env.OMLSERVER,
     tenant : process.env.TENANT,
     database : process.env.DATABASENAME,
     username : process.env.USERNAME,
     password : process.env.PASSWORD,
-});
+};
+
+const oml = new adb.AutonomousDataBase(parameters);
+
+// data
+let jobArray = new Array();
+const jobs = data.searchResults.hits.hits;
+jobs.forEach( job => jobArray.push(job["_source"]["JobInformation"]["Title"]) );
 
 // express app
 const app = express();
@@ -19,14 +27,27 @@ app.use(express.static('public'));
 
 // routes
 app.get('/', (req, res) => {
-    res.sendFile('./views/index.html', {root: __dirname})
+    res.sendFile('./views/index.html', {root: __dirname});    
 });
 
 app.post('/', (req, res) => {
 
     console.log(req.body);
-    res.send({"msg":adb.mostRelevantKeywords({text:req.body, topN:5, languaje:"SPANISH"})});
-    
+    oml.semanticSimilarities(
+        {
+            languaje:"SPANISH",
+            probe: req.body.probe,
+            sortDirection:"DESC",
+            textList: jobArray,
+            treshold:0.05,
+        }
+    ).then( resp => res.send({ "msg": resp}))
+    .catch( err => console.log(err));
+});
+
+// data
+app.get('/data', (req, res) => {
+    res.send( { "msg": data}) 
 });
 
 // 404
