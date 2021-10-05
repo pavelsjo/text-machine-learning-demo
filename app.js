@@ -1,6 +1,6 @@
 const express = require('express');
 const data = require('./source/db/db.json');
-const adb = require('./source/node-oml/node-oml/adb');
+const adb = require('./source/node-oml/adb');
 
 const parameters = {
     omlserver : process.env.OMLSERVER,
